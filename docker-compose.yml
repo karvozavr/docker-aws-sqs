@@ -1,5 +1,12 @@
-version: '3'
+version: '3.3'
+
 services:
+    localstack_sqs:
+        image: localstack/localstack:0.9.4
+        environment:
+            - SERVICES=sqs
+        ports:
+            - "4576:4576"
     app_ab:
         build: .
         depends_on:
@@ -7,17 +14,14 @@ services:
         entrypoint: /bin/bash
         command: "gradlew run --args 'queue_A queue_B'"
         restart: unless-stopped
-
+        links:
+            - localstack_sqs 
     app_ba:
         build: .
         depends_on:
             - localstack_sqs
-        command: ["bash", "gradlew", "run", "--args", "'queue_B queue_A'"]
+        entrypoint: /bin/bash
+        command: "gradlew run --args 'queue_B queue_A'"
         restart: unless-stopped
-
-    localstack_sqs:
-        image: localstack/localstack:0.9.4
-        environment:
-            - SERVICES=sqs
-        ports:
-            - "4576:4576"
+        links:
+            - localstack_sqs
