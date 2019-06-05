@@ -27,6 +27,7 @@ class IncrementService(private val queueA: String, private val queueB: String) {
     private fun processMessages() {
         val messages: List<Message> = sqsManager.receiveMessage(queueAUrl)
         messages.forEach {
+            println("Received message: $it.")
             incrementAndSend(it.body.toInt())
             sqsManager.deleteMessage(queueAUrl, it)
         }

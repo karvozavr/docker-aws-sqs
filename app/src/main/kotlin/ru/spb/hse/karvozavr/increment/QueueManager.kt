@@ -9,8 +9,8 @@ class QueueManager {
     private val sqs: AmazonSQS = AmazonSQSClientBuilder.standard()
         .withEndpointConfiguration(
             AwsClientBuilder.EndpointConfiguration(
-                "http://localhost:4576",
-                "eu-west-1"
+                "http://localstack:4576",
+                "eu-central-1"
             )
         )
         .build()
@@ -29,6 +29,7 @@ class QueueManager {
     public fun getOrCreateQueue(queueName: String): String {
         if (!checkQueueExists(queueName))
             createQueue(queueName)
+
         return getQueue(queueName)
     }
 
@@ -41,8 +42,9 @@ class QueueManager {
         try {
             sqs.createQueue(createQueueRequest)
         } catch (e: AmazonSQSException) {
-            if (!e.message.equals("Q"))
-            throw e
+            if (!(e.message.equals("QueueAlreadyExists") || e.message.equals("QueueNameExists"))) {
+                println(e.message)
+            }
         }
     }
 
