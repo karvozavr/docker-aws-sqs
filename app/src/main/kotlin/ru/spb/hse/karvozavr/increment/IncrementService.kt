@@ -1,9 +1,6 @@
 package ru.spb.hse.karvozavr.increment
 
-import com.amazonaws.services.sqs.AmazonSQS
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder
-import com.amazonaws.services.sqs.model.AmazonSQSException
-import com.amazonaws.services.sqs.model.CreateQueueRequest
+import com.amazonaws.services.sqs.model.Message
 
 class IncrementService(private val queueA: String, private val queueB: String) {
 
@@ -16,11 +13,30 @@ class IncrementService(private val queueA: String, private val queueB: String) {
         queueBUrl = sqsManager.getOrCreateQueue(queueB)
     }
 
-    fun run() {
-
+    public fun start() {
+        initialiseQueue()
+        while (true) {
+            processMessages()
+        }
     }
 
-    fun subscribeForQueues() {
+    private fun initialiseQueue() {
+        sqsManager.sendMessage(queueBUrl, "0")
+    }
 
+    private fun processMessages() {
+        val messages: List<Message> = sqsManager.receiveMessage(queueAUrl)
+        messages.forEach {
+            incrementAndSend(it.body.toInt())
+            sqsManager.deleteMessage(queueAUrl, it)
+        }
+    }
+
+    private fun increment(x: Int): Int {
+        return x + 1
+    }
+
+    private fun incrementAndSend(value: Int) {
+        sqsManager.sendMessage(queueBUrl, increment(value).toString())
     }
 }

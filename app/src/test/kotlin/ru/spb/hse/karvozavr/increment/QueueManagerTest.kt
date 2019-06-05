@@ -1,6 +1,5 @@
 package ru.spb.hse.karvozavr.increment
 
-import org.junit.Assert.*
 import org.junit.Test
 
 class QueueManagerTest {
