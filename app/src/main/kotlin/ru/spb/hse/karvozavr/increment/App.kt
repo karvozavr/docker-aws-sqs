@@ -2,6 +2,7 @@ package ru.spb.hse.karvozavr.increment
 
 fun main(args: Array<String>) {
     if (args.size != 2) {
+        args.forEach { println(it) }
         error("Invalid arguments")
     }
 
