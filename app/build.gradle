@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.564'
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.568'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.2.1'
 }
