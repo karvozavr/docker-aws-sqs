@@ -13,7 +13,7 @@ class IncrementService(private val queueA: String, private val queueB: String) {
         queueBUrl = sqsManager.getOrCreateQueue(queueB)
     }
 
-    public fun start() {
+    fun start() {
         initialiseQueue()
         while (true) {
             processMessages()

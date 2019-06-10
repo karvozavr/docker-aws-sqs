@@ -15,7 +15,7 @@ class QueueManager {
         )
         .build()
 
-    public fun checkQueueExists(queueName: String): Boolean {
+    fun checkQueueExists(queueName: String): Boolean {
         return try {
             sqs.getQueueUrl(queueName)
             true
@@ -24,16 +24,16 @@ class QueueManager {
         }
     }
 
-    public fun getQueue(queueName: String): String = sqs.getQueueUrl(queueName).queueUrl
+    fun getQueue(queueName: String): String = sqs.getQueueUrl(queueName).queueUrl
 
-    public fun getOrCreateQueue(queueName: String): String {
+    fun getOrCreateQueue(queueName: String): String {
         if (!checkQueueExists(queueName))
             createQueue(queueName)
 
         return getQueue(queueName)
     }
 
-    public fun createQueue(queueName: String) {
+    fun createQueue(queueName: String) {
         sqs.createQueue(queueName)
         val createQueueRequest: CreateQueueRequest =
             CreateQueueRequest(queueName)
@@ -48,14 +48,14 @@ class QueueManager {
         }
     }
 
-    public fun deleteMessage(queueUrl: String, message: Message) {
+    fun deleteMessage(queueUrl: String, message: Message) {
         sqs.deleteMessage(queueUrl, message.receiptHandle)
     }
 
-    public fun receiveMessage(queueUrl: String): List<Message> =
+    fun receiveMessage(queueUrl: String): List<Message> =
         sqs.receiveMessage(queueUrl).messages
 
-    public fun sendMessage(queueUrl: String, message: String): SendMessageResult =
+    fun sendMessage(queueUrl: String, message: String): SendMessageResult =
         sqs.sendMessage(
             SendMessageRequest()
                 .withQueueUrl(queueUrl)
