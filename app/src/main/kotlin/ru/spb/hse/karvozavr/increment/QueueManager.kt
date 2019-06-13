@@ -5,7 +5,7 @@ import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder
 import com.amazonaws.services.sqs.model.*
 
-class QueueManager {
+object QueueManager {
     private val sqs: AmazonSQS = AmazonSQSClientBuilder.standard()
         .withEndpointConfiguration(
             AwsClientBuilder.EndpointConfiguration(

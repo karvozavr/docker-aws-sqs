@@ -6,7 +6,7 @@ class IncrementService(private val queueA: String, private val queueB: String) {
 
     private val queueAUrl: String
     private val queueBUrl: String
-    private val sqsManager = QueueManager()
+    private val sqsManager = QueueManager
 
     init {
         queueAUrl = sqsManager.getOrCreateQueue(queueA)

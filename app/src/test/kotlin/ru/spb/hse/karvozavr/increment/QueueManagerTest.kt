@@ -6,7 +6,7 @@ class QueueManagerTest {
 
     @Test
     fun checkQueueExists() {
-        val manager = QueueManager()
+        val manager = QueueManager
         if (!manager.checkQueueExists("superQueue")) {
             manager.createQueue("superQueue")
         }
