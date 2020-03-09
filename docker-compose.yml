@@ -1,0 +1,34 @@
+version: '3.6'
+
+services:
+    localstack:
+        image: localstack/localstack:0.9.4
+        environment:
+            - SERVICES=sqs
+            - HOSTNAME_EXTERNAL=localstack
+        ports:
+            - "4576:4576"
+        networks:
+            - backend
+
+    app_ab:
+        build: .
+        depends_on:
+            - localstack
+        entrypoint: /bin/bash
+        command: "gradlew run --args 'queue_A queue_B'"
+        restart: unless-stopped
+        networks:
+            - backend 
+    app_ba:
+        build: .
+        depends_on:
+            - localstack
+        entrypoint: /bin/bash
+        command: "gradlew run --args 'queue_B queue_A'"
+        restart: unless-stopped
+        networks:
+            - backend
+networks:
+    backend:
+        driver: "bridge"
